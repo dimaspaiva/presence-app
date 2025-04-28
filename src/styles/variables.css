@@ -7,8 +7,11 @@ Text Color: #2F2F2F (Deep Gray) */
 :root {
   --background: #F8F0FB;
   --primary-accent: #FDCFE8;
-  --secondary-accent: #C1E1C1;
-  --presence-button: #FEE4CB;
-  --absence-button: #D4F1F4;
+  --secondary-accent: #b9d8b9;
+  --presence-button: #D4F1F4;
+  --absence-button: #FEE4CB;
   --text-color: #2F2F2F;
+  --text-color-light: #d6fbff;
+  --warning-background: #FFDAB9; /* Peach Puff */
+  --warning-text: #CD5C5C; /* Indian Red */
 }

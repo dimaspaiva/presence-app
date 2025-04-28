@@ -10,7 +10,6 @@ body {
   color: var(--text-color);
   display: flex;
   justify-content: center;
-  align-items: center;
   height: 100vh;
 }
 
@@ -21,7 +20,7 @@ button {
 .card {
   padding: 1rem 1.5rem;
   border-radius: 0.75rem;
-  box-shadow: 0.125rem 0.125rem 0.25rem rgba(68, 16, 0, 0.15);
+  box-shadow: 0 0.125rem 1rem rgba(121, 28, 0, 0.3);
   width: 26.25rem;
   height: 65vh;
 }
