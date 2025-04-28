@@ -1,0 +1,105 @@
+.user-card_container {
+  background-color: var(--secondary-accent);
+  position: absolute;
+  top: 20%;
+  transition: 0.5s;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.present {
+  background-color: var(--presence-button);
+  transform-origin: bottom right;
+  transform: rotate(30deg) translateX(50px);
+}
+
+.absent {
+  background-color: var(--absence-button);
+  transform-origin: bottom left;
+  transform: rotate(-30deg) translateX(-50px);
+}
+
+.fade {
+  opacity: 0;
+  z-index: 99;
+}
+
+.hidden {
+  display: none;
+}
+
+.user-data_container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  color: var(--text-color-light);
+  gap: 0.5rem;
+}
+
+.user-name {
+  font-size: 2rem;
+  display: block;
+  font-weight: bold;
+}
+
+.user-number {
+  width: 2rem;
+  height: 2rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 1rem;
+  border: solid 2px var(--text-color-light);
+  border-radius: 50%;
+  padding: 0.25rem 0.5rem;
+}
+
+.avatar-circle {
+  padding: 1rem;
+  border: solid 0.3rem var(--text-color-light);
+  border-radius: 50%;
+}
+
+.avatar_loading-spinner {
+  width: 21rem;
+  height: 21rem;
+  border: 0.5rem solid aquamarine;
+  border-radius: 50%;
+  border-end-end-radius: 50%;
+  border-style: solid none;
+  animation: rotate 1s linear infinite;
+}
+
+@keyframes rotate {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+.user-card_actions {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.user-card_button {
+  border: none;
+  font-size: 1.5rem;
+  box-shadow: 0 0.125rem 0.3rem rgba(92, 21, 0, 0.15);
+  padding: 0.5rem 1rem;
+  border-radius: 0.5rem;
+}
+
+.button_presence {
+  background-color: var(--presence-button);
+  color: var(--text-color);
+}
+
+.button_absence {
+  background-color: var(--absence-button);
+  color: var(--text-color);
+}
