@@ -32,7 +32,7 @@ describe("UserCard", () => {
     const mockCallback = vi.fn();
 
     const { getByText } = render(
-      <UserCard user={mockUser} callback={mockCallback} />
+      <UserCard user={mockUser} applyUserAttendance={mockCallback} />
     );
 
     const button = getByText("Presente");
@@ -53,7 +53,7 @@ describe("UserCard", () => {
     const mockCallback = vi.fn();
 
     const { getByText } = render(
-      <UserCard user={mockUser} callback={mockCallback} />
+      <UserCard user={mockUser} applyUserAttendance={mockCallback} />
     );
 
     const button = getByText("Ausente");

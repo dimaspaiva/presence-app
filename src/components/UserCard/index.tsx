@@ -36,7 +36,7 @@ export function UserCard({ user, applyUserAttendance }: UserProps) {
       .finally(() => {
         setIsLoading(false);
       });
-  }, []);
+  }, [user.id]);
 
   const createAnimationFunction = (attendanceType: AttendanceEnum) => {
     return () => {
