@@ -1,0 +1,14 @@
+/* Background: #F8F0FB (Lavender Mist)
+Primary Accent: #FDCFE8 (Pastel Magenta)
+Secondary Accent: #C1E1C1 (Pale Green)
+Presence Button: #FEE4CB (Soft Peach)
+Absence Button: #D4F1F4 (Light Cyan)
+Text Color: #2F2F2F (Deep Gray) */
+:root {
+  --background: #F8F0FB;
+  --primary-accent: #FDCFE8;
+  --secondary-accent: #C1E1C1;
+  --presence-button: #FEE4CB;
+  --absence-button: #D4F1F4;
+  --text-color: #2F2F2F;
+}
