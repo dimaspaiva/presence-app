@@ -3,7 +3,11 @@ Primary Accent: #FDCFE8 (Pastel Magenta)
 Secondary Accent: #C1E1C1 (Pale Green)
 Presence Button: #FEE4CB (Soft Peach)
 Absence Button: #D4F1F4 (Light Cyan)
-Text Color: #2F2F2F (Deep Gray) */
+Text Color: #2F2F2F (Deep Gray)
+Warning Background: #FFDAB9 (Peach Puff)
+Warning Text: #CD5C5C (Indian Red)
+Input Background: #fff (White)
+*/
 :root {
   --background: #F8F0FB;
   --primary-accent: #FDCFE8;
@@ -12,6 +16,7 @@ Text Color: #2F2F2F (Deep Gray) */
   --absence-button: #FEE4CB;
   --text-color: #2F2F2F;
   --text-color-light: #d6fbff;
-  --warning-background: #FFDAB9; /* Peach Puff */
-  --warning-text: #CD5C5C; /* Indian Red */
+  --warning-background: #FFDAB9;
+  --warning-text: #CD5C5C;
+  --input-background: #fff;
 }
