@@ -1,23 +1,35 @@
 import { useContext, useState } from "react";
-import { mockUserList } from "../../mocks/users.mock";
 import { UserCard } from "../UserCard";
 import { AttendanceEnum } from "../../types/Attendance";
 import { AttendanceActions } from "../AttendanceActions";
 import { AttendanceContext } from "../../context/attendance.context";
 import { ReturnIcon } from "../icons";
+import { ImportUserList } from "../ImportUserList";
+import { User } from "../../types/User";
 
 import "./styles.css";
 
 export function UserList() {
-  const [activeCards, setActiveCards] = useState<string[]>([
-    mockUserList[1].id,
-    mockUserList[0].id,
-  ]);
+  const [activeCards, setActiveCards] = useState<string[]>([]);
+  const [userList, setUserList] = useState<User[]>([]);
   const attendanceContext = useContext(AttendanceContext);
 
   if (!attendanceContext) {
     console.error("Attendance context is not available");
     return null;
+  }
+
+  if (!userList.length) {
+    return (
+      <div className="user-list_container">
+        <h1 className="user-list_title">Lista de Presença</h1>
+        <ImportUserList
+          setUserList={setUserList}
+          setActiveCards={setActiveCards}
+        />
+        ;
+      </div>
+    );
   }
 
   const { addUserToAttendance, removeLastUserFromAttendance } =
@@ -27,9 +39,7 @@ export function UserList() {
     userId: string,
     useAttendance: AttendanceEnum
   ) => {
-    const actualUserIndex = mockUserList.findIndex(
-      (user) => user.id === userId
-    );
+    const actualUserIndex = userList.findIndex((user) => user.id === userId);
 
     if (actualUserIndex === -1) {
       console.error("User not found");
@@ -37,13 +47,13 @@ export function UserList() {
     }
 
     addUserToAttendance({
-      ...mockUserList[actualUserIndex],
+      ...userList[actualUserIndex],
       isPresent: useAttendance === AttendanceEnum.PRESENT,
     });
 
     setActiveCards((prev) => {
-      if (mockUserList[actualUserIndex + 2]) {
-        return [mockUserList[actualUserIndex + 2].id, prev[0]];
+      if (userList[actualUserIndex + 2]) {
+        return [userList[actualUserIndex + 2].id, prev[0]];
       }
 
       if (prev.length === 2) {
@@ -57,20 +67,17 @@ export function UserList() {
   const rollBackActiveCard = () => {
     if (activeCards.length === 0) {
       removeLastUserFromAttendance();
-      setActiveCards([mockUserList[mockUserList.length - 1].id]);
+      setActiveCards([userList[userList.length - 1].id]);
       return;
     }
 
     if (activeCards.length === 1) {
       removeLastUserFromAttendance();
-      setActiveCards((prev) => [
-        prev[0],
-        mockUserList[mockUserList.length - 2].id,
-      ]);
+      setActiveCards((prev) => [prev[0], userList[userList.length - 2].id]);
       return;
     }
 
-    const actualIndex = mockUserList.findIndex(
+    const actualIndex = userList.findIndex(
       (user) => user.id === activeCards[1]
     );
 
@@ -79,13 +86,13 @@ export function UserList() {
       return;
     }
 
-    const previousUser = mockUserList[actualIndex - 1];
+    const previousUser = userList[actualIndex - 1];
 
     setActiveCards((prev) => [prev[1], previousUser.id]);
     removeLastUserFromAttendance();
   };
 
-  const isDisabledRollbackButton = mockUserList[0].id === activeCards[1];
+  const isDisabledRollbackButton = userList[0].id === activeCards[1];
 
   return (
     <div className="user-list_container">
@@ -94,7 +101,7 @@ export function UserList() {
         {activeCards.length < 2 && <AttendanceActions />}
         {activeCards.map((user) => (
           <UserCard
-            user={mockUserList.find((u) => u.id === user)!}
+            user={userList.find((u) => u.id === user)!}
             key={user}
             applyUserAttendance={selectNextActiveUserCard}
           />
