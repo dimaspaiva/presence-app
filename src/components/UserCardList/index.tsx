@@ -1,11 +1,14 @@
 import { useState } from "react";
 import { mockUserList } from "../../mocks/users.mock";
 import { UserCard } from "../UserCard";
-import { Attendance, AttendanceEnum } from "../../types/Attendance";
+import { AttendanceEnum } from "../../types/Attendance";
+import {
+  addUserToAttendance,
+  removeLastUserFromAttendance,
+} from "../../services/attendance-state.service";
+import { ReturnIcon } from "../icons";
 
 import "./styles.css";
-
-const attendanceState: Attendance = [];
 
 export function UserList() {
   const [activeCards, setActiveCards] = useState<string[]>([
@@ -26,7 +29,7 @@ export function UserList() {
       return;
     }
 
-    attendanceState.push({
+    addUserToAttendance({
       ...mockUserList[actualUserIndex],
       isPresent: useAttendance === AttendanceEnum.PRESENT,
     });
@@ -45,6 +48,19 @@ export function UserList() {
   };
 
   const rollBackActiveCard = () => {
+    if (activeCards.length === 0) {
+      setActiveCards([mockUserList[mockUserList.length - 1].id]);
+      return;
+    }
+
+    if (activeCards.length === 1) {
+      setActiveCards((prev) => [
+        prev[0],
+        mockUserList[mockUserList.length - 2].id,
+      ]);
+      return;
+    }
+
     const actualIndex = mockUserList.findIndex(
       (user) => user.id === activeCards[1]
     );
@@ -56,7 +72,7 @@ export function UserList() {
     const previousUser = mockUserList[actualIndex - 1];
 
     setActiveCards((prev) => [prev[1], previousUser.id]);
-    attendanceState.pop();
+    removeLastUserFromAttendance();
   };
 
   const isDisabledRollbackButton = mockUserList[0].id === activeCards[1];
@@ -79,7 +95,7 @@ export function UserList() {
           onClick={rollBackActiveCard}
           disabled={isDisabledRollbackButton}
         >
-          Voltar {"<"}
+          Voltar <ReturnIcon />
         </button>
       </div>
     </div>
