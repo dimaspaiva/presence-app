@@ -1,11 +1,8 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { mockUserList } from "../../mocks/users.mock";
 import { UserCard } from "../UserCard";
 import { AttendanceEnum } from "../../types/Attendance";
-import {
-  addUserToAttendance,
-  removeLastUserFromAttendance,
-} from "../../services/attendance-state.service";
+import { AttendanceContext } from "../../context/attendance.context";
 import { ReturnIcon } from "../icons";
 
 import "./styles.css";
@@ -15,6 +12,15 @@ export function UserList() {
     mockUserList[1].id,
     mockUserList[0].id,
   ]);
+  const attendanceContext = useContext(AttendanceContext);
+
+  if (!attendanceContext) {
+    console.error("Attendance context is not available");
+    return null;
+  }
+
+  const { addUserToAttendance, removeLastUserFromAttendance } =
+    attendanceContext;
 
   const selectNextActiveUserCard = (
     userId: string,
@@ -49,11 +55,13 @@ export function UserList() {
 
   const rollBackActiveCard = () => {
     if (activeCards.length === 0) {
+      removeLastUserFromAttendance();
       setActiveCards([mockUserList[mockUserList.length - 1].id]);
       return;
     }
 
     if (activeCards.length === 1) {
+      removeLastUserFromAttendance();
       setActiveCards((prev) => [
         prev[0],
         mockUserList[mockUserList.length - 2].id,
@@ -64,6 +72,7 @@ export function UserList() {
     const actualIndex = mockUserList.findIndex(
       (user) => user.id === activeCards[1]
     );
+
     if (actualIndex === 0) {
       console.warn("No previous user to roll back to");
       return;
