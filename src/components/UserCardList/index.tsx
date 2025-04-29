@@ -2,6 +2,7 @@ import { useContext, useState } from "react";
 import { mockUserList } from "../../mocks/users.mock";
 import { UserCard } from "../UserCard";
 import { AttendanceEnum } from "../../types/Attendance";
+import { AttendanceActions } from "../AttendanceActions";
 import { AttendanceContext } from "../../context/attendance.context";
 import { ReturnIcon } from "../icons";
 
@@ -90,6 +91,7 @@ export function UserList() {
     <div className="user-list_container">
       <h1 className="user-list_title">Lista de Presença</h1>
       <div className="user-list">
+        {activeCards.length < 2 && <AttendanceActions />}
         {activeCards.map((user) => (
           <UserCard
             user={mockUserList.find((u) => u.id === user)!}
