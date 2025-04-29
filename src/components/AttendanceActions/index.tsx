@@ -11,6 +11,8 @@ export function AttendanceActions() {
   const attendanceContext = useContext(AttendanceContext);
   const [presentFormat, setPresentFormat] = useState(".");
   const [absentFormat, setAbsentFormat] = useState(" ");
+  const [className, setClassName] = useState("");
+  const [highlightClassNameInput, setHighlightClassNameInput] = useState(false);
 
   if (!attendanceContext) {
     console.error("Attendance context is not available");
@@ -19,14 +21,29 @@ export function AttendanceActions() {
 
   const { attendanceState, attendanceStatistics } = attendanceContext;
 
+  function isNameInputValid(): boolean {
+    if (!className.trim()) {
+      alert("É necessário inserir o nome da turma");
+      setHighlightClassNameInput(true);
+      return true;
+    }
+
+    setHighlightClassNameInput(false);
+    return false;
+  }
+
   function downloadAttendanceAsCSV() {
+    if (isNameInputValid()) {
+      return;
+    }
+
     const data = mapAttendanceDataToCsvString(
       attendanceState,
       presentFormat.trim(),
       absentFormat.trim()
     );
     const fileNameDate = new Date().toISOString().split(".")[0];
-    const fileName = `attendance_${fileNameDate}.csv`;
+    const fileName = `presença_${className}_${fileNameDate}.csv`;
 
     downloadCsvFile(data, fileName);
   }
@@ -37,6 +54,10 @@ export function AttendanceActions() {
 
   function changeAbsentFormat(event: React.ChangeEvent<HTMLInputElement>) {
     setAbsentFormat(event.target.value);
+  }
+
+  function updateClassName(event: React.ChangeEvent<HTMLInputElement>) {
+    setClassName(event.target.value);
   }
 
   return (
@@ -70,6 +91,19 @@ export function AttendanceActions() {
 
       <div className="attendance_actions-formatter">
         <h3 className="attendance_formatter-tittle">Formatação do CSV</h3>
+        <div className="attendance_formatter-input_container">
+          <label className="attendance_formatter-input_label">
+            Nome da turma <small>* Obrigatório</small>
+          </label>
+          <input
+            type="text"
+            className={`attendance_formatter-input class-name_input ${
+              highlightClassNameInput ? "warning-input" : ""
+            }`}
+            value={className}
+            onChange={updateClassName}
+          />
+        </div>
         <div className="attendance_formatter-input_container">
           <label className="attendance_formatter-input_label">
             Formatação da presença

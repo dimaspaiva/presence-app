@@ -34,12 +34,24 @@
   display: block;
 }
 
+.attendance_formatter-input_label small {
+  color: var(--warning-text);
+}
+
 .attendance_formatter-input {
   border:none;
   border-radius: 0.5rem;
   width: 5rem;
   padding: 0.25rem 0.5rem;
   background-color: var(--input-background);
+}
+
+.class-name_input {
+  width: 10rem;
+}
+
+.warning-input {
+  border: solid 0.125rem var(--warning-text);
 }
 
 .attendance_formatter-input_hint {
