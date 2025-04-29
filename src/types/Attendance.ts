@@ -10,3 +10,11 @@ export type AttendanceUser = User & {
 }
 
 export type Attendance = AttendanceUser[]
+
+export type AttendanceStatistics = {
+  total: number
+  present: number
+  absent: number
+  percentagePresent: string
+  percentageAbsent: string
+}
