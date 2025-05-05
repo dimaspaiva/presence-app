@@ -81,23 +81,33 @@ export function ImportUserList({
   }
 
   return (
-    <div className="import-users_container card">
-      <div className="import-users_header">
-        <h2>Inserção da lista de usuários</h2>
-      </div>
-      <div className="import-users_body">
-        <div className="import-users_item">
-          <p>Importe usuários de um arquivo CSV</p>
-          <input type="file" accept=".csv" onChange={readInputCsvFile} />
+    <div className="user-list_container">
+      <h1 className="user-list_title">Lista de Presença</h1>
+      <div className="import-users_container card">
+        <div className="import-users_header">
+          <h2>Inserção da lista de usuários</h2>
         </div>
-        <p>
-          Modelo de arquivo CSV pra download:
-          <b onClick={downloadExampleCsv}>Clique aqui!</b>
-        </p>
-        <div className="import-users_item"></div>
-      </div>
-      <div className="import-users_actions">
-        <button>Import</button>
+        <div className="import-users_body">
+          <div className="import-users_item">
+            <p className="import-users_item_text">
+              Importe usuários de um arquivo CSV
+            </p>
+            <input
+              className="import-users_item_input"
+              type="file"
+              accept=".csv"
+              onChange={readInputCsvFile}
+            />
+          </div>
+          <p className="import-users_example-text">
+            Modelo de arquivo CSV pra download:
+            <br />
+            <b onClick={downloadExampleCsv}>Clique aqui!</b>
+          </p>
+        </div>
+        <div className="import-users_actions">
+          <button className="import-user_button">Import</button>
+        </div>
       </div>
     </div>
   );

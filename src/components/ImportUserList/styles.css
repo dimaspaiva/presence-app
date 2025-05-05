@@ -7,3 +7,39 @@
   flex-direction: column;
   justify-content: space-between;
 }
+
+.import-users_body {
+  display: flex;
+  flex-direction: column;
+}
+
+.import-users_item {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  align-items: center;
+  justify-content: center;
+  padding: 25% 0;
+}
+
+.import-users_item_text {
+  text-align: center;
+}
+
+.import-users_item_input {
+  width: 50%;
+}
+
+.import-users_example-text {
+  text-align: center;
+}
+
+.import-users_actions {
+  display: flex;
+  justify-content: center;
+}
+
+.import-user_button {
+  font-weight: bold;
+  font-size: 1.25rem;
+}

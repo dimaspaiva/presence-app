@@ -21,14 +21,10 @@ export function UserList() {
 
   if (!userList.length) {
     return (
-      <div className="user-list_container">
-        <h1 className="user-list_title">Lista de Presença</h1>
-        <ImportUserList
-          setUserList={setUserList}
-          setActiveCards={setActiveCards}
-        />
-        ;
-      </div>
+      <ImportUserList
+        setUserList={setUserList}
+        setActiveCards={setActiveCards}
+      />
     );
   }
 
