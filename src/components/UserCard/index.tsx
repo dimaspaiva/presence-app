@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { User } from "../../types/User";
 import { AttendanceEnum } from "../../types/Attendance";
 
@@ -13,9 +13,68 @@ export function UserCard({ user, applyUserAttendance }: UserProps) {
   const [selectedAnimation, setSelectedAnimation] = useState<
     AttendanceEnum | ""
   >("");
+  const cardRef = useRef<HTMLDivElement>(null);
   const [avatarUrl, setAvatarUrl] = useState<string>("#");
   const [isLoading, setIsLoading] = useState(false);
   const [fade, setFade] = useState(false);
+  const [cardPosition, setCardPosition] = useState<{ x: number; y: number }>({
+    x: 0,
+    y: 0,
+  });
+  const [rotate, setRotate] = useState("0deg");
+
+  function startCardMovement(event: TouchEvent) {
+    const x = event.touches[0].clientX;
+    const y = event.touches[0].clientY;
+
+    event.target?.addEventListener(
+      "touchmove",
+      buildMoveCard({ x, y }) as EventListenerOrEventListenerObject
+    ); // TODO Improve type
+    event.target?.addEventListener(
+      "touchend",
+      buildResetCard({ x, y }) as EventListenerOrEventListenerObject
+    ); // TODO Improve type
+  }
+
+  function buildMoveCard(initialPosition: { x: number; y: number }) {
+    return (event: TouchEvent) => {
+      const x = event.touches[0].clientX;
+      const y = event.touches[0].clientY;
+
+      const newX = x - initialPosition.x;
+      const newY = y - initialPosition.y;
+
+      if (newX > 0) {
+        setRotate(`${Math.min(newX * 0.1, 45)}deg`);
+      } else {
+        setRotate(`${Math.max(newX * 0.1, -45)}deg`);
+      }
+      setCardPosition({ x: newX, y: newY });
+    };
+  }
+
+  const MINIMAL_DISTANCE = 150;
+  function buildResetCard(initialPosition: { x: number; y: number }) {
+    return (event: TouchEvent) => {
+      if (
+        initialPosition.x - event.changedTouches[0].clientX >
+        MINIMAL_DISTANCE
+      ) {
+        return applyUserAttendance(user.id, AttendanceEnum.PRESENT);
+      }
+
+      if (
+        initialPosition.x - event.changedTouches[0].clientX <
+        -MINIMAL_DISTANCE
+      ) {
+        return applyUserAttendance(user.id, AttendanceEnum.ABSENT);
+      }
+
+      setCardPosition({ x: 0, y: 0 });
+      setRotate("0deg");
+    };
+  }
 
   useEffect(() => {
     setIsLoading(true);
@@ -38,6 +97,15 @@ export function UserCard({ user, applyUserAttendance }: UserProps) {
       });
   }, [user.id]);
 
+  useEffect(() => {
+    cardRef.current?.addEventListener("touchstart", startCardMovement);
+    const card = cardRef.current;
+
+    return () => {
+      card?.removeEventListener("touchstart", startCardMovement);
+    };
+  }, [cardRef]);
+
   const createAnimationFunction = (attendanceType: AttendanceEnum) => {
     return () => {
       setSelectedAnimation(attendanceType);
@@ -59,6 +127,13 @@ export function UserCard({ user, applyUserAttendance }: UserProps) {
       className={`user-card_container card ${
         user.number
       } ${selectedAnimation.toLowerCase()} ${fadeClass}`}
+      draggable
+      ref={cardRef}
+      style={{
+        marginLeft: cardPosition.x,
+        marginTop: cardPosition.y,
+        rotate,
+      }}
     >
       <div className="user-data_container">
         <h2 className="user-name">{user.name}</h2>
