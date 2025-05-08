@@ -1,6 +1,6 @@
 .user-list_container {
   padding: 3rem 0;
-  width: 420px;
+  width: var(--card-width);
 }
 
 .user-list_title {
@@ -15,7 +15,7 @@
 .rollback-container {
   position: absolute;
   top: 82%;
-  margin-left: 15%;
+  margin-left: var(--rollback-button-margin);
 }
 
 .rollback-button {

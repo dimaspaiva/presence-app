@@ -1,3 +1,7 @@
+html {
+  font-size: var(--base-font-size);
+}
+
 * {
   font-family: Arial, Helvetica, sans-serif;
   margin: 0;
@@ -21,10 +25,45 @@ button {
   box-shadow: 0 0.125rem 0.3rem rgba(92, 21, 0, 0.15);
 }
 
+@media only screen and (max-width: 600px) {
+  :root {
+    --rollback-button-margin: 37vw;
+    --card-width: 92vw;
+    --card-height: 65vh;
+    --card-mobile-margin: 7.5vw;
+  }
+}
+
+@media only screen and (min-width: 600px) {
+  :root {
+    --base-font-size: 14px;
+    --card-width: 26.25rem;
+    --card-height: 65vh;
+  }
+}
+
+@media only screen and (min-width: 1280px) {
+  :root {
+    --base-font-size: 14px;
+    --card-width: 24vw;
+    --card-height: 65vh;
+    --rollback-button-margin: 9.5vw;
+  }
+}
+
+@media only screen and (min-width: 1920px) {
+  :root {
+    --base-font-size: 16px;
+    --card-width: 24vw;
+    --card-height: 65vh;
+    --rollback-button-margin: 10vw;
+  }
+}
 .card {
   padding: 1rem 1.5rem;
   border-radius: 0.75rem;
   box-shadow: 0 0.125rem 1rem rgba(121, 28, 0, 0.3);
-  width: 26.25rem;
-  height: 65vh;
+  height: var(--card-height);
+  width: var(--card-width);
+  color: var(--color)
 }
