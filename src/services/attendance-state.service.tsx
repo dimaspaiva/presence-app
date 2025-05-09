@@ -20,9 +20,7 @@ export function useAttendance() {
   }
 
   function removeLastUserFromAttendance() {
-    console.log("removing last user");
     setAttendanceState((prev) => {
-      console.log(prev.slice(0, -1));
       return prev.slice(0, -1);
     });
   }

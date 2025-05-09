@@ -30,7 +30,6 @@ export function ImportUserList({
     }
 
     const data = await parseCsvFile(file);
-    console.log(data);
 
     function buildUserId(): string {
       return `${Math.ceil(Math.random() * 10000)}-${Math.ceil(
