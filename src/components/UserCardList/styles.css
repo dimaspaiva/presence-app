@@ -1,5 +1,5 @@
 .user-list_container {
-  padding: 3rem 0;
+  padding: 1.5rem 0;
   width: var(--card-width);
 }
 
@@ -14,7 +14,7 @@
 
 .rollback-container {
   position: absolute;
-  top: 82%;
+  top: calc(var(--card-height) + 10vh);
   margin-left: var(--rollback-button-margin);
 }
 
