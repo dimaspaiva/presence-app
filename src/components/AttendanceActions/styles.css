@@ -1,7 +1,7 @@
 .attendance-actions_container {
   background-color: var(--presence-button);
   position: absolute;
-  top: 20%;
+  top: 12%;
   transition: 0.5s;
   display: flex;
   flex-direction: column;
