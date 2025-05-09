@@ -23,7 +23,7 @@ export function useUserCard(applyUserAttendance: ApplyUserAttendanceFunction, us
   });
 
   const buildResetCard = useCallback(
-    (initialPosition: { x: number; y: number }, applyUserAttendance: ApplyUserAttendanceFunction, userId: string) => {
+    (initialPosition: { x: number; y: number }, applyUserAttendance: ApplyUserAttendanceFunction, userId: string, signal: AbortController) => {
       return (event: TouchEvent) => {
         if (
           initialPosition.x - event.changedTouches[0].clientX >
@@ -40,6 +40,7 @@ export function useUserCard(applyUserAttendance: ApplyUserAttendanceFunction, us
         }
 
         setCardPosition({ x: 0, y: 0, rotate: "0deg" });
+        signal.abort()
       };
     },
     []
@@ -79,14 +80,18 @@ export function useUserCard(applyUserAttendance: ApplyUserAttendanceFunction, us
       return;
     }
 
+    const cleanupEventListeners = new AbortController()
+    const cleanupSignal = cleanupEventListeners.signal
+
     event.target.addEventListener(
       "touchmove",
       buildMoveCard({ x, y }) as EventListenerOrEventListenerObject,
-      {}
+      { signal: cleanupSignal }
     ); // TODO Improve type
     event.target.addEventListener(
       "touchend",
-      buildResetCard({ x, y }, applyUserAttendance, user.id) as EventListenerOrEventListenerObject
+      buildResetCard({ x, y }, applyUserAttendance, user.id, cleanupEventListeners) as EventListenerOrEventListenerObject,
+      { signal: cleanupSignal }
     ); // TODO Improve type
   },
     [buildMoveCard, buildResetCard, applyUserAttendance, user.id]
