@@ -1,4 +1,4 @@
-.import-users_container {
+.import-student_container {
   background-color: var(--secondary-accent);
   position: absolute;
   top: 20%;
@@ -8,12 +8,12 @@
   justify-content: space-between;
 }
 
-.import-users_body {
+.import-student_body {
   display: flex;
   flex-direction: column;
 }
 
-.import-users_item {
+.import-student_item {
   display: flex;
   flex-direction: column;
   gap: 2rem;
@@ -22,24 +22,24 @@
   padding: 25% 0;
 }
 
-.import-users_item_text {
+.import-student_item_text {
   text-align: center;
 }
 
-.import-users_item_input {
+.import-student_item_input {
   width: 50%;
 }
 
-.import-users_example-text {
+.import-student_example-text {
   text-align: center;
 }
 
-.import-users_actions {
+.import-student_actions {
   display: flex;
   justify-content: center;
 }
 
-.import-user_button {
+.import-student_button {
   font-weight: bold;
   font-size: 1.25rem;
 }

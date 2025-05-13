@@ -6,15 +6,15 @@ import {
 import { Student } from "../../types/Student";
 import "./styles.css";
 
-export type ImportUserListProps = {
-  setUserList: (userList: Student[]) => void;
-  setActiveCards: (userList: [string, string]) => void;
+export type ImportStudentListProps = {
+  setStudentList: (student: Student[]) => void;
+  setActiveCards: (student: [string, string]) => void;
 };
 
-export function ImportUserList({
-  setUserList,
+export function ImportStudentList({
+  setStudentList,
   setActiveCards,
-}: ImportUserListProps) {
+}: ImportStudentListProps) {
   function downloadExampleCsv() {
     const data = buildUsersExampleCsvData();
     const fileName = "exemplo_lista_de_alunos.csv";
@@ -75,37 +75,37 @@ export function ImportUserList({
     }
 
     const userList = parseDataToUser(data);
-    setUserList(userList);
+    setStudentList(userList);
     setActiveCards([userList[1].id, userList[0].id]);
   }
 
   return (
-    <div className="user-list_container">
-      <h1 className="user-list_title">Lista de Presença</h1>
-      <div className="import-users_container card">
-        <div className="import-users_header">
+    <div className="student-list_container">
+      <h1 className="student-list_title">Lista de Presença</h1>
+      <div className="import-student_container card">
+        <div className="import-student_header">
           <h2>Inserção da lista de usuários</h2>
         </div>
-        <div className="import-users_body">
-          <div className="import-users_item">
-            <p className="import-users_item_text">
+        <div className="import-student_body">
+          <div className="import-student_item">
+            <p className="import-student_item_text">
               Importe usuários de um arquivo CSV
             </p>
             <input
-              className="import-users_item_input"
+              className="import-student_item_input"
               type="file"
               accept=".csv"
               onChange={readInputCsvFile}
             />
           </div>
-          <p className="import-users_example-text">
+          <p className="import-student_example-text">
             Modelo de arquivo CSV pra download:
             <br />
             <b onClick={downloadExampleCsv}>Clique aqui!</b>
           </p>
         </div>
-        <div className="import-users_actions">
-          <button className="import-user_button">Import</button>
+        <div className="import-student_actions">
+          <button className="import-student_button">Import</button>
         </div>
       </div>
     </div>

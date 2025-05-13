@@ -1,7 +1,7 @@
 import { StudentCard } from "../StudentCard";
 import { AttendanceActions } from "../AttendanceActions";
 import { ReturnIcon } from "../icons";
-import { ImportUserList } from "../ImportUserList";
+import { ImportStudentList } from "../ImportStudentList";
 import { useUserCardList } from "./useUserCardList";
 
 import "./styles.css";
@@ -19,8 +19,8 @@ export function UserList() {
 
   if (!userList.length) {
     return (
-      <ImportUserList
-        setUserList={setUserList}
+      <ImportStudentList
+        setStudentList={setUserList}
         setActiveCards={setActiveCards}
       />
     );
