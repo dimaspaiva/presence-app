@@ -2,9 +2,9 @@ import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { AttendanceEnum } from "../../types/Attendance";
 import { Student } from "../../types/Student";
 
-export type ApplyUserAttendanceFunction = (userId: string, attendance: AttendanceEnum) => void
+export type ApplyStudentAttendanceFunction = (studentId: string, attendance: AttendanceEnum) => void
 
-export function useUserCard(applyUserAttendance: ApplyUserAttendanceFunction, user: Student) {
+export function useUserCard(applyStudentAttendance: ApplyStudentAttendanceFunction, student: Student) {
   const [selectedAnimation, setSelectedAnimation] = useState<
     AttendanceEnum | ""
   >("");
@@ -23,20 +23,20 @@ export function useUserCard(applyUserAttendance: ApplyUserAttendanceFunction, us
   });
 
   const buildResetCard = useCallback(
-    (initialPosition: { x: number; y: number }, applyUserAttendance: ApplyUserAttendanceFunction, userId: string, signal: AbortController) => {
+    (initialPosition: { x: number; y: number }, applyStudentAttendance: ApplyStudentAttendanceFunction, userId: string, signal: AbortController) => {
       return (event: TouchEvent) => {
         if (
           initialPosition.x - event.changedTouches[0].clientX >
           MINIMAL_DISTANCE
         ) {
-          return applyUserAttendance(userId, AttendanceEnum.PRESENT);
+          return applyStudentAttendance(userId, AttendanceEnum.PRESENT);
         }
 
         if (
           initialPosition.x - event.changedTouches[0].clientX <
           -MINIMAL_DISTANCE
         ) {
-          return applyUserAttendance(userId, AttendanceEnum.ABSENT);
+          return applyStudentAttendance(userId, AttendanceEnum.ABSENT);
         }
 
         setCardPosition({ x: 0, y: 0, rotate: "0deg" });
@@ -90,18 +90,18 @@ export function useUserCard(applyUserAttendance: ApplyUserAttendanceFunction, us
     ); // TODO Improve type
     event.target.addEventListener(
       "touchend",
-      buildResetCard({ x, y }, applyUserAttendance, user.id, cleanupEventListeners) as EventListenerOrEventListenerObject,
+      buildResetCard({ x, y }, applyStudentAttendance, student.id, cleanupEventListeners) as EventListenerOrEventListenerObject,
       { signal: cleanupSignal }
     ); // TODO Improve type
   },
-    [buildMoveCard, buildResetCard, applyUserAttendance, user.id]
+    [buildMoveCard, buildResetCard, applyStudentAttendance, student.id]
   );
 
   const MINIMAL_DISTANCE = 150;
 
   useEffect(() => {
     setIsLoading(true);
-    fetch(`https://api.dicebear.com/9.x/bottts/svg?seed=${user.id}`)
+    fetch(`https://api.dicebear.com/9.x/bottts/svg?seed=${student.id}`)
       .then((response) => {
         if (!response.ok) {
           throw new Error("Network response was not ok");
@@ -118,7 +118,7 @@ export function useUserCard(applyUserAttendance: ApplyUserAttendanceFunction, us
       .finally(() => {
         setIsLoading(false);
       });
-  }, [user.id]);
+  }, [student.id]);
 
   useEffect(() => {
     cardRef.current?.addEventListener("touchstart", startCardMovement);
@@ -138,15 +138,15 @@ export function useUserCard(applyUserAttendance: ApplyUserAttendanceFunction, us
         }, 100);
 
         setTimeout(() => {
-          applyUserAttendance(user.id, attendanceType);
+          applyStudentAttendance(student.id, attendanceType);
         }, 300);
       };
     },
-    [applyUserAttendance, user.id]
+    [applyStudentAttendance, student.id]
   );
 
 
-  const userCardClassList = useMemo(() => {
+  const studentCardClassList = useMemo(() => {
     const fadeClass = fade ? "fade" : ""
 
     return `user-card_container card ${fadeClass} ${selectedAnimation.toLocaleLowerCase()}`
@@ -160,6 +160,6 @@ export function useUserCard(applyUserAttendance: ApplyUserAttendanceFunction, us
     fade,
     cardPosition,
     createAnimationFunction,
-    userCardClassList
+    studentCardClassList
   }
 }

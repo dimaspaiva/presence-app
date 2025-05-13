@@ -1,4 +1,4 @@
-.user-card_container {
+.student-card_container {
   background-color: var(--secondary-accent);
   position: absolute;
   top: 12%;
@@ -29,7 +29,7 @@
   display: none;
 }
 
-.user-data_container {
+.student-data_container {
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -37,13 +37,13 @@
   gap: 0.5rem;
 }
 
-.user-name {
+.student-name {
   font-size: 2rem;
   display: block;
   font-weight: bold;
 }
 
-.user-number {
+.student-number {
   width: 2rem;
   height: 2rem;
   display: flex;
@@ -80,13 +80,13 @@
   }
 }
 
-.user-card_actions {
+.student-card_actions {
   display: flex;
   justify-content: space-between;
   align-items: center;
 }
 
-.user-card_button {
+.student-card_button {
   font-size: 1.5rem;
 }
 

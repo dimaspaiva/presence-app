@@ -1,4 +1,4 @@
-import { UserCard } from "../UserCard";
+import { StudentCard } from "../StudentCard";
 import { AttendanceActions } from "../AttendanceActions";
 import { ReturnIcon } from "../icons";
 import { ImportUserList } from "../ImportUserList";
@@ -32,10 +32,10 @@ export function UserList() {
       <div className="user-list">
         {activeCards.length < 2 && <AttendanceActions />}
         {activeCards.map((user) => (
-          <UserCard
-            user={userList.find((u) => u.id === user)!}
+          <StudentCard
+            student={userList.find((u) => u.id === user)!}
             key={user}
-            applyUserAttendance={selectNextActiveUserCard}
+            applyStudentAttendance={selectNextActiveUserCard}
           />
         ))}
       </div>

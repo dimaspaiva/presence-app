@@ -1,6 +1,6 @@
 import { describe, expect, it, vi } from "vitest";
 import { render, waitFor } from "@testing-library/react";
-import { UserCard } from ".";
+import { StudentCard } from ".";
 import { Student } from "../../types/Student";
 
 describe("UserCard", () => {
@@ -12,7 +12,7 @@ describe("UserCard", () => {
     };
 
     const { getByText, queryByText } = render(
-      <UserCard user={mockUser} applyUserAttendance={vi.fn()} />
+      <StudentCard student={mockUser} applyStudentAttendance={vi.fn()} />
     );
 
     expect(getByText(mockUser.name)).toBeInTheDocument();
@@ -32,7 +32,7 @@ describe("UserCard", () => {
     const mockCallback = vi.fn();
 
     const { getByText } = render(
-      <UserCard user={mockUser} applyUserAttendance={mockCallback} />
+      <StudentCard student={mockUser} applyStudentAttendance={mockCallback} />
     );
 
     const button = getByText("Presente");
@@ -53,7 +53,7 @@ describe("UserCard", () => {
     const mockCallback = vi.fn();
 
     const { getByText } = render(
-      <UserCard user={mockUser} applyUserAttendance={mockCallback} />
+      <StudentCard student={mockUser} applyStudentAttendance={mockCallback} />
     );
 
     const button = getByText("Ausente");
