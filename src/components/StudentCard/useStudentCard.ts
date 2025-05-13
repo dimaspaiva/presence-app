@@ -4,7 +4,7 @@ import { Student } from "../../types/Student";
 
 export type ApplyStudentAttendanceFunction = (studentId: string, attendance: AttendanceEnum) => void
 
-export function useUserCard(applyStudentAttendance: ApplyStudentAttendanceFunction, student: Student) {
+export function useStudentCard(applyStudentAttendance: ApplyStudentAttendanceFunction, student: Student) {
   const [selectedAnimation, setSelectedAnimation] = useState<
     AttendanceEnum | ""
   >("");
@@ -23,20 +23,20 @@ export function useUserCard(applyStudentAttendance: ApplyStudentAttendanceFuncti
   });
 
   const buildResetCard = useCallback(
-    (initialPosition: { x: number; y: number }, applyStudentAttendance: ApplyStudentAttendanceFunction, userId: string, signal: AbortController) => {
+    (initialPosition: { x: number; y: number }, applyStudentAttendance: ApplyStudentAttendanceFunction, studentId: string, signal: AbortController) => {
       return (event: TouchEvent) => {
         if (
           initialPosition.x - event.changedTouches[0].clientX >
           MINIMAL_DISTANCE
         ) {
-          return applyStudentAttendance(userId, AttendanceEnum.PRESENT);
+          return applyStudentAttendance(studentId, AttendanceEnum.PRESENT);
         }
 
         if (
           initialPosition.x - event.changedTouches[0].clientX <
           -MINIMAL_DISTANCE
         ) {
-          return applyStudentAttendance(userId, AttendanceEnum.ABSENT);
+          return applyStudentAttendance(studentId, AttendanceEnum.ABSENT);
         }
 
         setCardPosition({ x: 0, y: 0, rotate: "0deg" });
@@ -149,7 +149,7 @@ export function useUserCard(applyStudentAttendance: ApplyStudentAttendanceFuncti
   const studentCardClassList = useMemo(() => {
     const fadeClass = fade ? "fade" : ""
 
-    return `user-card_container card ${fadeClass} ${selectedAnimation.toLocaleLowerCase()}`
+    return `student-card_container card ${fadeClass} ${selectedAnimation.toLocaleLowerCase()}`
   }, [fade, selectedAnimation])
 
   return {

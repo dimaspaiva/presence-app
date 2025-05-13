@@ -3,27 +3,27 @@ import { render, waitFor } from "@testing-library/react";
 import { StudentCard } from ".";
 import { Student } from "../../types/Student";
 
-describe("UserCard", () => {
-  it("should render the UserCard component", () => {
-    const mockUser: Student = {
+describe("StudentCard", () => {
+  it("should render the StudentCard component", () => {
+    const mockStudent: Student = {
       id: "random-id",
       name: "John Doe",
       number: 1,
     };
 
     const { getByText, queryByText } = render(
-      <StudentCard student={mockUser} applyStudentAttendance={vi.fn()} />
+      <StudentCard student={mockStudent} applyStudentAttendance={vi.fn()} />
     );
 
-    expect(getByText(mockUser.name)).toBeInTheDocument();
-    expect(queryByText(mockUser.id)).toBeNull();
-    expect(getByText(mockUser.number)).toBeInTheDocument();
+    expect(getByText(mockStudent.name)).toBeInTheDocument();
+    expect(queryByText(mockStudent.id)).toBeNull();
+    expect(getByText(mockStudent.number)).toBeInTheDocument();
     expect(getByText("Presente")).toBeInTheDocument();
     expect(getByText("Ausente")).toBeInTheDocument();
   });
 
   it("should call the callback function when the button 'presente' is clicked", () => {
-    const mockUser: Student = {
+    const mockStudent: Student = {
       id: "random-id",
       name: "John Doe",
       number: 1,
@@ -32,7 +32,10 @@ describe("UserCard", () => {
     const mockCallback = vi.fn();
 
     const { getByText } = render(
-      <StudentCard student={mockUser} applyStudentAttendance={mockCallback} />
+      <StudentCard
+        student={mockStudent}
+        applyStudentAttendance={mockCallback}
+      />
     );
 
     const button = getByText("Presente");
@@ -44,7 +47,7 @@ describe("UserCard", () => {
   });
 
   it("should call the callback function when the button 'ausente' is clicked", () => {
-    const mockUser: Student = {
+    const mockStudent: Student = {
       id: "random-id",
       name: "John Doe",
       number: 1,
@@ -53,7 +56,10 @@ describe("UserCard", () => {
     const mockCallback = vi.fn();
 
     const { getByText } = render(
-      <StudentCard student={mockUser} applyStudentAttendance={mockCallback} />
+      <StudentCard
+        student={mockStudent}
+        applyStudentAttendance={mockCallback}
+      />
     );
 
     const button = getByText("Ausente");

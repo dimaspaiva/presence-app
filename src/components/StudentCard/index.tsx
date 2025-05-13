@@ -1,6 +1,6 @@
 import { Student } from "../../types/Student";
 import { AttendanceEnum } from "../../types/Attendance";
-import { useUserCard } from "./useStudentCard";
+import { useStudentCard } from "./useStudentCard";
 
 import "./styles.css";
 
@@ -23,7 +23,7 @@ export function StudentCard({
     studentCardClassList,
     isLoading,
     createAnimationFunction,
-  } = useUserCard(applyStudentAttendance, student);
+  } = useStudentCard(applyStudentAttendance, student);
 
   return (
     <div
