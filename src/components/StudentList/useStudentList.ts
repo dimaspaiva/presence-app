@@ -1,11 +1,11 @@
-import { useContext, useState } from "react";
+import { useContext, useMemo, useState } from "react";
 import { Student } from "../../types/Student";
 import { AttendanceContext } from "../../context/attendance.context";
 import { AttendanceEnum } from "../../types/Attendance";
 
-export function useUserCardList() {
+export function useStudentList() {
   const [activeCards, setActiveCards] = useState<string[]>([]);
-  const [userList, setUserList] = useState<Student[]>([]);
+  const [studentList, setStudentList] = useState<Student[]>([]);
   const attendanceContext = useContext(AttendanceContext);
 
   if (!attendanceContext) {
@@ -16,25 +16,25 @@ export function useUserCardList() {
   const { addUserToAttendance, removeLastUserFromAttendance } =
     attendanceContext;
 
-  const selectNextActiveUserCard = (
-    userId: string,
+  const selectNextActiveStudentCard = (
+    studentId: string,
     useAttendance: AttendanceEnum
   ) => {
-    const actualUserIndex = userList.findIndex((user) => user.id === userId);
+    const actualStudentIndex = studentList.findIndex((student) => student.id === studentId);
 
-    if (actualUserIndex === -1) {
-      console.error("User not found");
+    if (actualStudentIndex === -1) {
+      console.error("Student not found");
       return;
     }
 
     addUserToAttendance({
-      ...userList[actualUserIndex],
+      ...studentList[actualStudentIndex],
       isPresent: useAttendance === AttendanceEnum.PRESENT,
     });
 
     setActiveCards((prev) => {
-      if (userList[actualUserIndex + 2]) {
-        return [userList[actualUserIndex + 2].id, prev[0]];
+      if (studentList[actualStudentIndex + 2]) {
+        return [studentList[actualStudentIndex + 2].id, prev[0]];
       }
 
       if (prev.length === 2) {
@@ -48,40 +48,43 @@ export function useUserCardList() {
   const rollBackActiveCard = () => {
     if (activeCards.length === 0) {
       removeLastUserFromAttendance();
-      setActiveCards([userList[userList.length - 1].id]);
+      setActiveCards([studentList[studentList.length - 1].id]);
       return;
     }
 
     if (activeCards.length === 1) {
       removeLastUserFromAttendance();
-      setActiveCards((prev) => [prev[0], userList[userList.length - 2].id]);
+      setActiveCards((prev) => [prev[0], studentList[studentList.length - 2].id]);
       return;
     }
 
-    const actualIndex = userList.findIndex(
-      (user) => user.id === activeCards[1]
+    const actualIndex = studentList.findIndex(
+      (student) => student.id === activeCards[1]
     );
 
     if (actualIndex === 0) {
-      console.warn("No previous user to roll back to");
+      console.warn("No previous student to roll back to");
       return;
     }
 
-    const previousUser = userList[actualIndex - 1];
+    const previousStudent = studentList[actualIndex - 1];
 
-    setActiveCards((prev) => [prev[1], previousUser.id]);
+    setActiveCards((prev) => [prev[1], previousStudent.id]);
     removeLastUserFromAttendance();
   };
 
-  const isDisabledRollbackButton = userList.length && userList[0].id === activeCards[1];
+  const isDisabledRollbackButton = useMemo(() =>
+    Boolean(studentList.length) && studentList[0].id === activeCards[1],
+    [studentList, activeCards]
+  );
 
 
   return {
-    setUserList,
-    userList,
+    setStudentList,
+    studentList,
     activeCards,
     setActiveCards,
-    selectNextActiveUserCard,
+    selectNextActiveStudentCard,
     isDisabledRollbackButton,
     rollBackActiveCard,
   }

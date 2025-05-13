@@ -1,23 +1,23 @@
 import { describe, expect, it } from "vitest";
 import { fireEvent, render, screen, waitFor } from "@testing-library/react";
 
-import { UserList } from "./index";
+import { StudentList } from "./index";
 
-describe("UserCard", () => {
-  it("should render user list properly", () => {
-    const expectedUserCardLength = 2;
+describe("StudentList", () => {
+  it("should render student list properly", () => {
+    const expectedStudentCardLength = 2;
 
-    render(<UserList />);
+    render(<StudentList />);
 
-    expect(screen.queryAllByTestId("user-card")).toHaveLength(
-      expectedUserCardLength
+    expect(screen.queryAllByTestId("student-card")).toHaveLength(
+      expectedStudentCardLength
     );
     expect(screen.getByText("Lista de Presença")).toBeInTheDocument();
     expect(screen.getByText("Voltar <")).toBeDisabled();
   });
 
-  it("should enable rollback button when user card is not the first", () => {
-    render(<UserList />);
+  it("should enable rollback button when student card is not the first", () => {
+    render(<StudentList />);
 
     const [presentButton] = screen.getAllByText("Presente");
     fireEvent.click(presentButton);

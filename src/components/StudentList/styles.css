@@ -1,14 +1,14 @@
-.user-list_container {
+.student-list_container {
   padding: 1.5rem 0;
   width: var(--card-width);
 }
 
-.user-list_title {
+.student-list_title {
   color: var(--text-color);
   text-align: center;
 }
 
-.user-list :nth-child(1 of .user-card_container) {
+.student-list :nth-child(1 of .student-card_container) {
   box-shadow: none;
 }
 

@@ -2,40 +2,40 @@ import { StudentCard } from "../StudentCard";
 import { AttendanceActions } from "../AttendanceActions";
 import { ReturnIcon } from "../icons";
 import { ImportStudentList } from "../ImportStudentList";
-import { useUserCardList } from "./useUserCardList";
+import { useStudentList } from "./useStudentList";
 
 import "./styles.css";
 
-export function UserList() {
+export function StudentList() {
   const {
     activeCards,
     isDisabledRollbackButton,
     rollBackActiveCard,
-    selectNextActiveUserCard,
+    selectNextActiveStudentCard,
     setActiveCards,
-    setUserList,
-    userList,
-  } = useUserCardList();
+    setStudentList,
+    studentList,
+  } = useStudentList();
 
-  if (!userList.length) {
+  if (!studentList.length) {
     return (
       <ImportStudentList
-        setStudentList={setUserList}
+        setStudentList={setStudentList}
         setActiveCards={setActiveCards}
       />
     );
   }
 
   return (
-    <div className="user-list_container">
-      <h1 className="user-list_title">Lista de Presença</h1>
-      <div className="user-list">
+    <div className="student-list_container">
+      <h1 className="student-list_title">Lista de Presença</h1>
+      <div className="student-list">
         {activeCards.length < 2 && <AttendanceActions />}
-        {activeCards.map((user) => (
+        {activeCards.map((studentId) => (
           <StudentCard
-            student={userList.find((u) => u.id === user)!}
-            key={user}
-            applyStudentAttendance={selectNextActiveUserCard}
+            student={studentList.find((student) => student.id === studentId)!}
+            key={studentId}
+            applyStudentAttendance={selectNextActiveStudentCard}
           />
         ))}
       </div>

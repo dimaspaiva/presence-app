@@ -1,4 +1,4 @@
-import { UserList } from "./components/UserCardList";
+import { StudentList } from "./components/StudentList";
 import { AttendanceContext } from "./context/attendance.context";
 import { useAttendance } from "./services/attendance-state.service";
 
@@ -7,7 +7,7 @@ function App() {
 
   return (
     <AttendanceContext.Provider value={attendanceState}>
-      <UserList />
+      <StudentList />
     </AttendanceContext.Provider>
   );
 }
