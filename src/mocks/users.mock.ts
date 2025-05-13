@@ -1,6 +1,6 @@
-import { User } from "../types/User";
+import { Student } from "../types/Student";
 
-export const mockUserList: User[] = [
+export const mockUserList: Student[] = [
   { id: Math.random().toString().slice(2, 10), name: 'João Silva', number: 1 },
   { id: Math.random().toString().slice(2, 10), name: 'Maria Oliveira', number: 2 },
   { id: Math.random().toString().slice(2, 10), name: 'Pedro Santos', number: 3 },

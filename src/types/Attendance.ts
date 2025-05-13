@@ -1,11 +1,11 @@
-import { User } from "./User"
+import { Student } from "./Student"
 
 export enum AttendanceEnum {
   PRESENT = "PRESENT",
   ABSENT = "ABSENT",
 }
 
-export type AttendanceUser = User & {
+export type AttendanceUser = Student & {
   isPresent: boolean
 }
 

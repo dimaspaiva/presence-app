@@ -1,11 +1,11 @@
 import { describe, expect, it, vi } from "vitest";
 import { render, waitFor } from "@testing-library/react";
 import { UserCard } from ".";
-import { User } from "../../types/User";
+import { Student } from "../../types/Student";
 
 describe("UserCard", () => {
   it("should render the UserCard component", () => {
-    const mockUser: User = {
+    const mockUser: Student = {
       id: "random-id",
       name: "John Doe",
       number: 1,
@@ -23,7 +23,7 @@ describe("UserCard", () => {
   });
 
   it("should call the callback function when the button 'presente' is clicked", () => {
-    const mockUser: User = {
+    const mockUser: Student = {
       id: "random-id",
       name: "John Doe",
       number: 1,
@@ -44,7 +44,7 @@ describe("UserCard", () => {
   });
 
   it("should call the callback function when the button 'ausente' is clicked", () => {
-    const mockUser: User = {
+    const mockUser: Student = {
       id: "random-id",
       name: "John Doe",
       number: 1,

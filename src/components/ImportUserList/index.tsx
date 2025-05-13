@@ -3,11 +3,11 @@ import {
   downloadCsvFile,
   parseCsvFile,
 } from "../../services/csv.service";
-import { User } from "../../types/User";
+import { Student } from "../../types/Student";
 import "./styles.css";
 
 export type ImportUserListProps = {
-  setUserList: (userList: User[]) => void;
+  setUserList: (userList: Student[]) => void;
   setActiveCards: (userList: [string, string]) => void;
 };
 
@@ -37,7 +37,7 @@ export function ImportUserList({
       )}-${Math.ceil(Math.random() * 10000)}`;
     }
 
-    function parseDataToUser(data: unknown): User[] {
+    function parseDataToUser(data: unknown): Student[] {
       if (data === null || !Array.isArray(data)) {
         throw new Error("Invalid data format");
       }
@@ -64,7 +64,7 @@ export function ImportUserList({
           throw new Error("Invalid user data, invalid user number");
         }
 
-        const newUser: User = {
+        const newUser: Student = {
           id: buildUserId(),
           name: user["Nome"],
           number: Number(user["Número"]),

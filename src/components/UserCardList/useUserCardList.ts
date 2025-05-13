@@ -1,11 +1,11 @@
 import { useContext, useState } from "react";
-import { User } from "../../types/User";
+import { Student } from "../../types/Student";
 import { AttendanceContext } from "../../context/attendance.context";
 import { AttendanceEnum } from "../../types/Attendance";
 
 export function useUserCardList() {
   const [activeCards, setActiveCards] = useState<string[]>([]);
-  const [userList, setUserList] = useState<User[]>([]);
+  const [userList, setUserList] = useState<Student[]>([]);
   const attendanceContext = useContext(AttendanceContext);
 
   if (!attendanceContext) {

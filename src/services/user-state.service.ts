@@ -1,9 +1,9 @@
 import { mockUserList } from "../mocks/users.mock";
-import { User } from "../types/User";
+import { Student } from "../types/Student";
 
-const userList: User[] = mockUserList
+const userList: Student[] = mockUserList
 
-export function addUserToAttendance(user: User) {
+export function addUserToAttendance(user: Student) {
   userList.push(user);
 }
 

@@ -1,11 +1,11 @@
-import { User } from "../../types/User";
+import { Student } from "../../types/Student";
 import { AttendanceEnum } from "../../types/Attendance";
 
 import "./styles.css";
 import { useUserCard } from "./useUserCard";
 
 export type UserProps = {
-  user: User;
+  user: Student;
   applyUserAttendance: (id: string, userAttendance: AttendanceEnum) => void;
 };
 

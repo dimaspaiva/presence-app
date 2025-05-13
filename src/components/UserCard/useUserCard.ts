@@ -1,10 +1,10 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { AttendanceEnum } from "../../types/Attendance";
-import { User } from "../../types/User";
+import { Student } from "../../types/Student";
 
 export type ApplyUserAttendanceFunction = (userId: string, attendance: AttendanceEnum) => void
 
-export function useUserCard(applyUserAttendance: ApplyUserAttendanceFunction, user: User) {
+export function useUserCard(applyUserAttendance: ApplyUserAttendanceFunction, user: Student) {
   const [selectedAnimation, setSelectedAnimation] = useState<
     AttendanceEnum | ""
   >("");
