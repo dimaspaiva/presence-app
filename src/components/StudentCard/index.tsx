@@ -1,6 +1,6 @@
 import { Student } from "../../types/Student";
 import { AttendanceEnum } from "../../types/Attendance";
-import { useUserCard } from "./useUserCard";
+import { useUserCard } from "./useStudentCard";
 
 import "./styles.css";
 

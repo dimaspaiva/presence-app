@@ -31,52 +31,52 @@ export function ImportStudentList({
 
     const data = await parseCsvFile(file);
 
-    function buildUserId(): string {
+    function buildId(): string {
       return `${Math.ceil(Math.random() * 10000)}-${Math.ceil(
         Math.random() * 10000
       )}-${Math.ceil(Math.random() * 10000)}`;
     }
 
-    function parseDataToUser(data: unknown): Student[] {
+    function parseDataToStudent(data: unknown): Student[] {
       if (data === null || !Array.isArray(data)) {
         throw new Error("Invalid data format");
       }
 
-      return data.map((user: unknown) => {
-        if (typeof user !== "object" || user === null) {
-          throw new Error("Invalid user data");
+      return data.map((student: unknown) => {
+        if (typeof student !== "object" || student === null) {
+          throw new Error("Invalid student data");
         }
-        if (!("Número" in user) || !("Nome" in user)) {
-          throw new Error("Invalid user data");
+        if (!("Número" in student) || !("Nome" in student)) {
+          throw new Error("Invalid student data");
         }
         if (
-          typeof user["Número"] !== "string" ||
-          typeof user["Nome"] !== "string"
+          typeof student["Número"] !== "string" ||
+          typeof student["Nome"] !== "string"
         ) {
-          throw new Error("Invalid user data");
+          throw new Error("Invalid student data");
         }
-        if (user["Número"].length === 0 || user["Nome"].length === 0) {
-          throw new Error("Invalid user data");
-        }
-
-        const userNumber = Number(user["Número"]);
-        if (isNaN(userNumber)) {
-          throw new Error("Invalid user data, invalid user number");
+        if (student["Número"].length === 0 || student["Nome"].length === 0) {
+          throw new Error("Invalid student data");
         }
 
-        const newUser: Student = {
-          id: buildUserId(),
-          name: user["Nome"],
-          number: Number(user["Número"]),
+        const studentNumber = Number(student["Número"]);
+        if (isNaN(studentNumber)) {
+          throw new Error("Invalid student data, invalid student number");
+        }
+
+        const newStudent: Student = {
+          id: buildId(),
+          name: student["Nome"],
+          number: Number(student["Número"]),
         };
 
-        return newUser;
+        return newStudent;
       });
     }
 
-    const userList = parseDataToUser(data);
-    setStudentList(userList);
-    setActiveCards([userList[1].id, userList[0].id]);
+    const studentList = parseDataToStudent(data);
+    setStudentList(studentList);
+    setActiveCards([studentList[1].id, studentList[0].id]);
   }
 
   return (
