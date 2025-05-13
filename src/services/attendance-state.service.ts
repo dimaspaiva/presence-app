@@ -2,24 +2,24 @@ import { useMemo, useState } from "react";
 import {
   Attendance,
   AttendanceStatistics,
-  AttendanceUser,
+  AttendanceStudent,
 } from "../types/Attendance";
 
 export type UseAttendance = {
   attendanceState: Attendance;
-  addUserToAttendance: (user: AttendanceUser) => void;
-  removeLastUserFromAttendance: () => void;
+  addStudentToAttendance: (attendanceStudent: AttendanceStudent) => void;
+  removeLastStudentFromAttendance: () => void;
   attendanceStatistics: AttendanceStatistics;
 };
 
 export function useAttendance() {
   const [attendanceState, setAttendanceState] = useState<Attendance>([]);
 
-  function addUserToAttendance(user: AttendanceUser) {
-    setAttendanceState((prev) => [...prev, user]);
+  function addStudentToAttendance(attendanceStudent: AttendanceStudent) {
+    setAttendanceState((prev) => [...prev, attendanceStudent]);
   }
 
-  function removeLastUserFromAttendance() {
+  function removeLastStudentFromAttendance() {
     setAttendanceState((prev) => {
       return prev.slice(0, -1);
     });
@@ -27,7 +27,9 @@ export function useAttendance() {
 
   const attendanceStatistics = useMemo((): AttendanceStatistics => {
     const total = attendanceState.length;
-    const present = attendanceState.filter((user) => user.isPresent).length;
+    const present = attendanceState.filter(
+      (student) => student.isPresent
+    ).length;
     const absent = total - present;
 
     return {
@@ -41,8 +43,8 @@ export function useAttendance() {
 
   return {
     attendanceState,
-    addUserToAttendance,
-    removeLastUserFromAttendance,
+    addStudentToAttendance,
+    removeLastStudentFromAttendance,
     attendanceStatistics,
   };
 }

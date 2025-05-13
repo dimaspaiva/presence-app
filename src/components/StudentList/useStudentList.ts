@@ -13,7 +13,7 @@ export function useStudentList() {
     throw new Error('Attendance context is not available')
   }
 
-  const { addUserToAttendance, removeLastUserFromAttendance } =
+  const { addStudentToAttendance, removeLastStudentFromAttendance } =
     attendanceContext;
 
   const selectNextActiveStudentCard = (
@@ -27,7 +27,7 @@ export function useStudentList() {
       return;
     }
 
-    addUserToAttendance({
+    addStudentToAttendance({
       ...studentList[actualStudentIndex],
       isPresent: useAttendance === AttendanceEnum.PRESENT,
     });
@@ -47,13 +47,13 @@ export function useStudentList() {
 
   const rollBackActiveCard = () => {
     if (activeCards.length === 0) {
-      removeLastUserFromAttendance();
+      removeLastStudentFromAttendance();
       setActiveCards([studentList[studentList.length - 1].id]);
       return;
     }
 
     if (activeCards.length === 1) {
-      removeLastUserFromAttendance();
+      removeLastStudentFromAttendance();
       setActiveCards((prev) => [prev[0], studentList[studentList.length - 2].id]);
       return;
     }
@@ -70,7 +70,7 @@ export function useStudentList() {
     const previousStudent = studentList[actualIndex - 1];
 
     setActiveCards((prev) => [prev[1], previousStudent.id]);
-    removeLastUserFromAttendance();
+    removeLastStudentFromAttendance();
   };
 
   const isDisabledRollbackButton = useMemo(() =>

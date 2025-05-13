@@ -5,11 +5,11 @@ export enum AttendanceEnum {
   ABSENT = "ABSENT",
 }
 
-export type AttendanceUser = Student & {
+export type AttendanceStudent = Student & {
   isPresent: boolean
 }
 
-export type Attendance = AttendanceUser[]
+export type Attendance = AttendanceStudent[]
 
 export type AttendanceStatistics = {
   total: number
