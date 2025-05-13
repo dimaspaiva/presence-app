@@ -1,5 +1,5 @@
 import {
-  buildUsersExampleCsvData,
+  buildStudentsExampleCsvData,
   downloadCsvFile,
   parseCsvFile,
 } from "../../services/csv.service";
@@ -16,7 +16,7 @@ export function ImportStudentList({
   setActiveCards,
 }: ImportStudentListProps) {
   function downloadExampleCsv() {
-    const data = buildUsersExampleCsvData();
+    const data = buildStudentsExampleCsvData();
     const fileName = "exemplo_lista_de_alunos.csv";
 
     downloadCsvFile(data, fileName);

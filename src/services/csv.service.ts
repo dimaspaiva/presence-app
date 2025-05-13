@@ -2,14 +2,14 @@ import { Attendance } from "../types/Attendance";
 
 export function mapAttendanceDataToCsvString(attendanceData: Attendance, presentFormat = '.', absentFormat = ' '): string {
   const header = "Número,Nome,Presença\n"
-  const body = attendanceData.reduce((result, user) => result.concat(
-    `${user.number},${user.name},${user.isPresent ? presentFormat : absentFormat}\n`),
+  const body = attendanceData.reduce((result, student) => result.concat(
+    `${student.number},${student.name},${student.isPresent ? presentFormat : absentFormat}\n`),
     '');
 
   return `${header}${body}`;
 }
 
-export function buildUsersExampleCsvData(): string {
+export function buildStudentsExampleCsvData(): string {
   const header = "Número,Nome"
   const body = "1,Nome 1\n2,Nome 2\n3,Nome 3";
 
