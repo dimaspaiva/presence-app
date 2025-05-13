@@ -1,64 +1,18 @@
-import { useContext, useState } from "react";
-import {
-  downloadCsvFile,
-  mapAttendanceDataToCsvString,
-} from "../../services/csv.service";
-import { AttendanceContext } from "../../context/attendance.context";
-
 import "./styles.css";
+import { useAttendanceActions } from "./useAttendanceActions";
 
 export function AttendanceActions() {
-  const attendanceContext = useContext(AttendanceContext);
-  const [presentFormat, setPresentFormat] = useState(".");
-  const [absentFormat, setAbsentFormat] = useState(" ");
-  const [className, setClassName] = useState("");
-  const [highlightClassNameInput, setHighlightClassNameInput] = useState(false);
-
-  if (!attendanceContext) {
-    console.error("Attendance context is not available");
-    return null;
-  }
-
-  const { attendanceState, attendanceStatistics } = attendanceContext;
-
-  function isNameInputValid(): boolean {
-    if (!className.trim()) {
-      alert("É necessário inserir o nome da turma");
-      setHighlightClassNameInput(true);
-      return true;
-    }
-
-    setHighlightClassNameInput(false);
-    return false;
-  }
-
-  function downloadAttendanceAsCSV() {
-    if (isNameInputValid()) {
-      return;
-    }
-
-    const data = mapAttendanceDataToCsvString(
-      attendanceState,
-      presentFormat.trim(),
-      absentFormat.trim()
-    );
-    const fileNameDate = new Date().toISOString().split(".")[0];
-    const fileName = `presença_${className}_${fileNameDate}.csv`;
-
-    downloadCsvFile(data, fileName);
-  }
-
-  function changePresentFormat(event: React.ChangeEvent<HTMLInputElement>) {
-    setPresentFormat(event.target.value);
-  }
-
-  function changeAbsentFormat(event: React.ChangeEvent<HTMLInputElement>) {
-    setAbsentFormat(event.target.value);
-  }
-
-  function updateClassName(event: React.ChangeEvent<HTMLInputElement>) {
-    setClassName(event.target.value);
-  }
+  const {
+    attendanceStatistics,
+    changeAbsentFormat,
+    changePresentFormat,
+    className,
+    absentFormat,
+    presentFormat,
+    downloadAttendanceAsCSV,
+    highlightClassNameInput,
+    updateClassName,
+  } = useAttendanceActions();
 
   return (
     <div className="attendance-actions_container card">
