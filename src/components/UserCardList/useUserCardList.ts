@@ -73,7 +73,7 @@ export function useUserCardList() {
     removeLastUserFromAttendance();
   };
 
-  const isDisabledRollbackButton = userList[0].id === activeCards[1];
+  const isDisabledRollbackButton = userList.length && userList[0].id === activeCards[1];
 
 
   return {
