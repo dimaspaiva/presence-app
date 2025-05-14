@@ -1,10 +1,10 @@
 import { StudentCard } from "../StudentCard";
 import { AttendanceActions } from "../AttendanceActions";
-import { ReturnIcon } from "../icons";
 import { ImportStudentList } from "../ImportStudentList";
 import { useStudentList } from "./useStudentList";
 
 import "./styles.css";
+import { RollbackButton } from "./RollbackButton";
 
 export function StudentList() {
   const {
@@ -38,15 +38,10 @@ export function StudentList() {
             applyStudentAttendance={selectNextActiveStudentCard}
           />
         ))}
-      </div>
-      <div className="rollback-container">
-        <button
-          className="rollback-button"
-          onClick={rollBackActiveCard}
+        <RollbackButton
           disabled={isDisabledRollbackButton}
-        >
-          Voltar <ReturnIcon />
-        </button>
+          rollBackActiveCard={rollBackActiveCard}
+        />
       </div>
     </div>
   );
