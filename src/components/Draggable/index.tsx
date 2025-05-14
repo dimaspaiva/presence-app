@@ -19,7 +19,7 @@ export function Draggable({
   distanceToAccept,
   onAccept,
 }: DraggableProps) {
-  const { containerRef, rotation, x } = useDraggable(
+  const { containerRef, rotation, positionX } = useDraggable(
     onAccept,
     distanceToAccept
   );
@@ -30,9 +30,7 @@ export function Draggable({
       ref={containerRef}
       className={className}
       style={{
-        position: "absolute",
-        marginLeft: x,
-        rotate: rotation,
+        transform: `translateX(${positionX}) rotate(${rotation})`,
       }}
     >
       {children}

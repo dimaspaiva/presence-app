@@ -5,7 +5,7 @@ const initialPosition = "0px";
 const initialRotation = "0deg";
 
 export function useDraggable(onAccept: (direction: DirectionEnum) => void, distanceToAccept: number) {
-  const [x, setX] = useState(initialPosition);
+  const [positionX, setPositionX] = useState(initialPosition);
   const [rotation, setRotation] = useState(initialRotation);
   const containerRef = useRef<HTMLDivElement>(null);
 
@@ -27,7 +27,7 @@ export function useDraggable(onAccept: (direction: DirectionEnum) => void, dista
           : onAccept(DirectionEnum.LEFT);
       }
 
-      setX(initialPosition);
+      setPositionX(initialPosition);
       setRotation(initialRotation);
       abortSignal.abort();
     };
@@ -36,11 +36,10 @@ export function useDraggable(onAccept: (direction: DirectionEnum) => void, dista
   const buildDragging = (initialX: number) => {
     return (moveEvent: TouchEvent) => {
       moveEvent.preventDefault();
-      const actualX = Number(moveEvent.touches[0].clientX.toFixed(2));
+      const actualX = Number(moveEvent.touches[0].clientX.toFixed(0));
 
-      const distance = actualX - initialX;
-      const calculatedRotation = calculateRotation(distance);
-      setX(`${distance}px`);
+      const calculatedRotation = calculateRotation(actualX - initialX);
+      setPositionX(`${actualX - initialX}px`);
       setRotation(calculatedRotation);
     };
   };
@@ -87,7 +86,7 @@ export function useDraggable(onAccept: (direction: DirectionEnum) => void, dista
 
   return {
     containerRef,
-    x,
+    positionX,
     rotation
   }
 }
