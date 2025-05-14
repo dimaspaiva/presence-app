@@ -67,3 +67,13 @@ button {
   width: var(--card-width);
   color: var(--color)
 }
+
+footer {
+  position: absolute;
+  bottom: 0.5rem;
+  right: 1.5rem;
+}
+
+footer p {
+  font-size: 0.75rem;
+}

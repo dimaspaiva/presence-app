@@ -8,6 +8,9 @@ function App() {
   return (
     <AttendanceContext.Provider value={attendanceState}>
       <StudentList />
+      <footer>
+        <p>Version: 1.0.0</p>
+      </footer>
     </AttendanceContext.Provider>
   );
 }
