@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { AttendanceEnum } from "../../types/Attendance";
 import { Student } from "../../types/Student";
+import { DirectionEnum } from "../Draggable";
 
 export type ApplyStudentAttendanceFunction = (studentId: string, attendance: AttendanceEnum) => void
 
@@ -12,92 +13,14 @@ export function useStudentCard(applyStudentAttendance: ApplyStudentAttendanceFun
   const [avatarUrl, setAvatarUrl] = useState<string>("#");
   const [isLoading, setIsLoading] = useState(false);
   const [fade, setFade] = useState(false);
-  const [cardPosition, setCardPosition] = useState<{
-    x: number;
-    y: number;
-    rotate: string;
-  }>({
-    x: 0,
-    y: 0,
-    rotate: "0deg",
-  });
 
-  const buildResetCard = useCallback(
-    (initialPosition: { x: number; y: number }, applyStudentAttendance: ApplyStudentAttendanceFunction, studentId: string, signal: AbortController) => {
-      return (event: TouchEvent) => {
-        if (
-          initialPosition.x - event.changedTouches[0].clientX >
-          MINIMAL_DISTANCE
-        ) {
-          return applyStudentAttendance(studentId, AttendanceEnum.PRESENT);
-        }
-
-        if (
-          initialPosition.x - event.changedTouches[0].clientX <
-          -MINIMAL_DISTANCE
-        ) {
-          return applyStudentAttendance(studentId, AttendanceEnum.ABSENT);
-        }
-
-        setCardPosition({ x: 0, y: 0, rotate: "0deg" });
-        signal.abort()
-      };
-    },
-    []
-  );
-
-  const calculateRotation = useCallback((distanceX: number) => {
-    if (distanceX > 0) {
-      return `${Math.min(distanceX * 0.1, 45)}deg`;
+  function defineStudentAttendance(direction: DirectionEnum) {
+    if (direction === DirectionEnum.LEFT) {
+      return applyStudentAttendance(student.id, AttendanceEnum.ABSENT)
     }
 
-    return `${Math.max(distanceX * 0.1, -45)}deg`;
-  }, []);
-
-  const buildMoveCard = useCallback(
-    (initialPosition: { x: number; y: number }) => {
-      return (event: TouchEvent) => {
-        event.preventDefault();
-        const x = event.touches[0].clientX;
-        const y = event.touches[0].clientY;
-
-        const newX = x - initialPosition.x;
-        const newY = y - initialPosition.y;
-
-        const rotate = calculateRotation(newX);
-        setCardPosition({ x: newX, y: newY, rotate });
-      };
-    },
-    [calculateRotation]
-  );
-
-  const startCardMovement = useCallback((event: TouchEvent) => {
-    const x = event.touches[0].clientX;
-    const y = event.touches[0].clientY;
-
-    if (!event.target) {
-      console.error("Missing event target");
-      return;
-    }
-
-    const cleanupEventListeners = new AbortController()
-    const cleanupSignal = cleanupEventListeners.signal
-
-    event.target.addEventListener(
-      "touchmove",
-      buildMoveCard({ x, y }) as EventListenerOrEventListenerObject,
-      { signal: cleanupSignal }
-    ); // TODO Improve type
-    event.target.addEventListener(
-      "touchend",
-      buildResetCard({ x, y }, applyStudentAttendance, student.id, cleanupEventListeners) as EventListenerOrEventListenerObject,
-      { signal: cleanupSignal }
-    ); // TODO Improve type
-  },
-    [buildMoveCard, buildResetCard, applyStudentAttendance, student.id]
-  );
-
-  const MINIMAL_DISTANCE = 150;
+    applyStudentAttendance(student.id, AttendanceEnum.PRESENT)
+  }
 
   useEffect(() => {
     setIsLoading(true);
@@ -119,15 +42,6 @@ export function useStudentCard(applyStudentAttendance: ApplyStudentAttendanceFun
         setIsLoading(false);
       });
   }, [student.id]);
-
-  useEffect(() => {
-    cardRef.current?.addEventListener("touchstart", startCardMovement);
-    const card = cardRef.current;
-
-    return () => {
-      card?.removeEventListener("touchstart", startCardMovement);
-    };
-  }, [cardRef, startCardMovement]);
 
   const createAnimationFunction = useCallback(
     (attendanceType: AttendanceEnum) => {
@@ -153,13 +67,13 @@ export function useStudentCard(applyStudentAttendance: ApplyStudentAttendanceFun
   }, [fade, selectedAnimation])
 
   return {
-    selectedAnimation,
-    cardRef,
     avatarUrl,
-    isLoading,
-    fade,
-    cardPosition,
+    cardRef,
     createAnimationFunction,
-    studentCardClassList
+    defineStudentAttendance,
+    fade,
+    isLoading,
+    selectedAnimation,
+    studentCardClassList,
   }
 }
