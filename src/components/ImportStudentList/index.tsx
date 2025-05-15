@@ -4,6 +4,8 @@ import {
   parseCsvFile,
 } from "../../services/csv.service";
 import { Student } from "../../types/Student";
+import { generateId } from "../../utils/stringUtils";
+
 import "./styles.css";
 
 export type ImportStudentListProps = {
@@ -30,12 +32,6 @@ export function ImportStudentList({
     }
 
     const data = await parseCsvFile(file);
-
-    function buildId(): string {
-      return `${Math.ceil(Math.random() * 10000)}-${Math.ceil(
-        Math.random() * 10000
-      )}-${Math.ceil(Math.random() * 10000)}`;
-    }
 
     function parseDataToStudent(data: unknown): Student[] {
       if (data === null || !Array.isArray(data)) {
@@ -67,7 +63,7 @@ export function ImportStudentList({
         }
 
         const newStudent: Student = {
-          id: buildId(),
+          id: generateId(),
           name: student["nome"],
           number: Number(student["numero"]),
         };
