@@ -1,4 +1,5 @@
 import { Attendance } from "../types/Attendance";
+import { normalizeString } from "../utils/stringUtils";
 
 export function mapAttendanceDataToCsvString(attendanceData: Attendance, presentFormat = '.', absentFormat = ' '): string {
   const header = "Número,Nome,Presença\n"
@@ -27,7 +28,7 @@ export function parseCsvFile(file: File) {
 
       const text = event.target.result;
       const [header, ...lines] = text.split('\n');
-      const objectKeys = header.split(',');
+      const objectKeys = header.split(',').map(normalizeString);
 
       const noEmptyLineData = lines.filter((line) => Boolean(line))
       const data = noEmptyLineData.map(line => {
