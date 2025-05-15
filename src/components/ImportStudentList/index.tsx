@@ -44,30 +44,32 @@ export function ImportStudentList({
 
       return data.map((student: unknown) => {
         if (typeof student !== "object" || student === null) {
-          throw new Error("Invalid student data");
+          throw new Error(
+            "Invalid student data, type of student is not an object"
+          );
         }
-        if (!("Número" in student) || !("Nome" in student)) {
-          throw new Error("Invalid student data");
+        if (!("numero" in student) || !("nome" in student)) {
+          throw new Error("Invalid student data, wrong column name");
         }
         if (
-          typeof student["Número"] !== "string" ||
-          typeof student["Nome"] !== "string"
+          typeof student["numero"] !== "string" ||
+          typeof student["nome"] !== "string"
         ) {
-          throw new Error("Invalid student data");
+          throw new Error("Invalid student data, header is not of type string");
         }
-        if (student["Número"].length === 0 || student["Nome"].length === 0) {
-          throw new Error("Invalid student data");
+        if (student["numero"].length === 0 || student["nome"].length === 0) {
+          throw new Error("Invalid student data, missing values");
         }
 
-        const studentNumber = Number(student["Número"]);
+        const studentNumber = Number(student["numero"]);
         if (isNaN(studentNumber)) {
           throw new Error("Invalid student data, invalid student number");
         }
 
         const newStudent: Student = {
           id: buildId(),
-          name: student["Nome"],
-          number: Number(student["Número"]),
+          name: student["nome"],
+          number: Number(student["numero"]),
         };
 
         return newStudent;
