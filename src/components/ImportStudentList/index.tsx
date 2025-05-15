@@ -1,81 +1,24 @@
 import {
-  buildStudentsExampleCsvData,
-  downloadCsvFile,
-  parseCsvFile,
-} from "../../services/csv.service";
-import { Student } from "../../types/Student";
-import { generateId } from "../../utils/stringUtils";
+  SetActiveCards,
+  SetStudentList,
+  useImportStudentList,
+} from "./useImportStudentList";
 
 import "./styles.css";
 
 export type ImportStudentListProps = {
-  setStudentList: (student: Student[]) => void;
-  setActiveCards: (student: [string, string]) => void;
+  setStudentList: SetStudentList;
+  setActiveCards: SetActiveCards;
 };
 
 export function ImportStudentList({
   setStudentList,
   setActiveCards,
 }: ImportStudentListProps) {
-  function downloadExampleCsv() {
-    const data = buildStudentsExampleCsvData();
-    const fileName = "exemplo_lista_de_alunos.csv";
-
-    downloadCsvFile(data, fileName);
-  }
-
-  async function readInputCsvFile(event: React.ChangeEvent<HTMLInputElement>) {
-    const file = event.target.files?.[0];
-    if (!file) {
-      console.error("No file selected");
-      return;
-    }
-
-    const data = await parseCsvFile(file);
-
-    function parseDataToStudent(data: unknown): Student[] {
-      if (data === null || !Array.isArray(data)) {
-        throw new Error("Invalid data format");
-      }
-
-      return data.map((student: unknown) => {
-        if (typeof student !== "object" || student === null) {
-          throw new Error(
-            "Invalid student data, type of student is not an object"
-          );
-        }
-        if (!("numero" in student) || !("nome" in student)) {
-          throw new Error("Invalid student data, wrong column name");
-        }
-        if (
-          typeof student["numero"] !== "string" ||
-          typeof student["nome"] !== "string"
-        ) {
-          throw new Error("Invalid student data, header is not of type string");
-        }
-        if (student["numero"].length === 0 || student["nome"].length === 0) {
-          throw new Error("Invalid student data, missing values");
-        }
-
-        const studentNumber = Number(student["numero"]);
-        if (isNaN(studentNumber)) {
-          throw new Error("Invalid student data, invalid student number");
-        }
-
-        const newStudent: Student = {
-          id: generateId(),
-          name: student["nome"],
-          number: Number(student["numero"]),
-        };
-
-        return newStudent;
-      });
-    }
-
-    const studentList = parseDataToStudent(data);
-    setStudentList(studentList);
-    setActiveCards([studentList[1].id, studentList[0].id]);
-  }
+  const { readInputCsvFile, downloadExampleCsv } = useImportStudentList(
+    setStudentList,
+    setActiveCards
+  );
 
   return (
     <div className="student-list_container">
