@@ -2,9 +2,9 @@ import { StudentCard } from "../StudentCard";
 import { AttendanceActions } from "../AttendanceActions";
 import { ImportStudentList } from "../ImportStudentList";
 import { useStudentList } from "./useStudentList";
+import { RollbackButton } from "./RollbackButton";
 
 import "./styles.css";
-import { RollbackButton } from "./RollbackButton";
 
 export function StudentList() {
   const {
