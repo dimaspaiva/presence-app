@@ -9,7 +9,7 @@ function App() {
     <AttendanceContext.Provider value={attendanceState}>
       <StudentList />
       <footer>
-        <p>Version: 1.0.2</p>
+        <p>Version: 1.0.4</p>
       </footer>
     </AttendanceContext.Provider>
   );

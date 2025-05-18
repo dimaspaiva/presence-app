@@ -2,7 +2,6 @@
   background-color: var(--secondary-accent);
   position: absolute;
   top: 12%;
-  transition: 0.5s;
   display: flex;
   flex-direction: column;
   justify-content: space-between;

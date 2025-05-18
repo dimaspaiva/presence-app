@@ -1,92 +1,104 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
 import { DirectionEnum } from ".";
 
-const initialPosition = "0px";
-const initialRotation = "0deg";
+
+const ANIMATION_INTERVAL_MS = 200 // MS = Milliseconds
+const ANIMATION_CSS_INTERVAL = '0.2s'
+const ROTATE_MULTIPLIER = 0.1
 
 export function useDraggable(onAccept: (direction: DirectionEnum) => void, distanceToAccept: number) {
-  const [positionX, setPositionX] = useState(initialPosition);
-  const [rotation, setRotation] = useState(initialRotation);
-  const containerRef = useRef<HTMLDivElement>(null);
-
-  const calculateRotation = (distanceX: number) => {
-    if (distanceX > 0) {
-      return `${Math.min(distanceX * 0.07, 45)}deg`;
-    }
-
-    return `${Math.max(distanceX * 0.07, -45)}deg`;
-  }
-
-  const buildEndDrag = (initialX: number, abortSignal: AbortController) => {
-    return (moveEvent: TouchEvent) => {
-      const endX = moveEvent.changedTouches[0].clientX;
-      const distance = endX - initialX;
-      if (Math.abs(distance) > distanceToAccept) {
-        return distance > 0
-          ? onAccept(DirectionEnum.RIGHT)
-          : onAccept(DirectionEnum.LEFT);
-      }
-
-      setPositionX(initialPosition);
-      setRotation(initialRotation);
-      abortSignal.abort();
-    };
-  };
-
-  const buildDragging = (initialX: number) => {
-    return (moveEvent: TouchEvent) => {
-      moveEvent.preventDefault();
-      const actualX = Number(moveEvent.touches[0].clientX.toFixed(0));
-
-      const calculatedRotation = calculateRotation(actualX - initialX);
-      setPositionX(`${actualX - initialX}px`);
-      setRotation(calculatedRotation);
-    };
-  };
-
-  function startDrag(moveEvent: TouchEvent) {
-    const { clientX: initialX } = moveEvent.touches[0];
-
-    if (!moveEvent?.target) {
-      console.error("Failed to start drag");
-      return;
-    }
-
-    const movementAbortController = new AbortController();
-    const movementAbortSignal = movementAbortController.signal;
-
-    const trimmedInitialX = Number(initialX.toFixed(0));
-    moveEvent.target.addEventListener(
-      "touchend",
-      buildEndDrag(
-        trimmedInitialX,
-        movementAbortController
-      ) as EventListenerOrEventListenerObject,
-      {
-        signal: movementAbortSignal,
-        capture: false,
-        passive: false,
-      }
-    );
-
-    moveEvent.target.addEventListener(
-      "touchmove",
-      buildDragging(trimmedInitialX) as EventListenerOrEventListenerObject,
-      {
-        signal: movementAbortSignal,
-        capture: false,
-        passive: false,
-      }
-    );
-  }
+  const containerRef = useRef<HTMLDivElement>(null)
+  const initialXPosition = useRef(0)
+  const animationFrameId = useRef<number>(null)
 
   useEffect(() => {
-    containerRef.current?.addEventListener("touchstart", startDrag);
-  }, [containerRef]);
+    if (!containerRef.current) {
+      console.warn('Reference is not set yet')
+      return
+    }
+
+    containerRef.current.addEventListener('touchstart', getInitialPosition)
+    containerRef.current.addEventListener('touchmove', updateContainerPosition)
+    containerRef.current.addEventListener('touchend', checkFinalTouchPosition)
+  }, [containerRef])
+
+  function getInitialPosition(touchEvent: TouchEvent) {
+    touchEvent.preventDefault()
+
+    initialXPosition.current = touchEvent.touches[0].clientX
+  }
+
+  function resetFrameAnimation() {
+    if (animationFrameId.current) {
+      cancelAnimationFrame(animationFrameId.current)
+    }
+  }
+
+  function updateContainerPosition(touchEvent: TouchEvent) {
+    touchEvent.preventDefault()
+
+    if (!containerRef.current) {
+      console.error('Missing container - start')
+      return
+    }
+
+    const actualXPosition = touchEvent.touches[0].clientX
+    const containerXPosition = actualXPosition - initialXPosition.current
+    const containerRotation = containerXPosition * ROTATE_MULTIPLIER
+
+    resetFrameAnimation()
+    animationFrameId.current = requestAnimationFrame(() => {
+      if (!containerRef.current) {
+        console.error('Missing container - move')
+        return
+      }
+
+      containerRef.current.style.transform = `translateX(${containerXPosition}px) rotate(${containerRotation}deg)`
+    })
+  }
+
+  function resetAnimation(direction: DirectionEnum) {
+    setTimeout(() => {
+      containerRef.current!.style.opacity = '1'
+      containerRef.current!.style.transition = ''
+      return onAccept(direction)
+    }, ANIMATION_INTERVAL_MS);
+  }
+
+  function isDistanceAcceptable(finalX: number) {
+    return Math.abs(finalX - initialXPosition.current) < distanceToAccept
+  }
+
+  function checkFinalTouchPosition(touchEvent: TouchEvent) {
+    if (!containerRef.current) {
+      console.error('Missing container - end')
+      return
+    }
+
+    const finalXPosition = touchEvent.changedTouches[0].clientX;
+    containerRef.current.style.transition = ANIMATION_CSS_INTERVAL
+
+    if (isDistanceAcceptable(finalXPosition)) {
+      resetFrameAnimation()
+      containerRef.current.style.transform = 'translateX(0px) rotate(0deg)'
+
+      setTimeout(() => {
+        containerRef.current!.style.transition = ''
+      }, ANIMATION_INTERVAL_MS);
+      return
+    }
+
+    if (finalXPosition - initialXPosition.current > 0) {
+      containerRef.current.style.opacity = '0'
+
+      return resetAnimation(DirectionEnum.RIGHT)
+    }
+
+    containerRef.current.style.opacity = '0'
+    return resetAnimation(DirectionEnum.LEFT)
+  }
 
   return {
     containerRef,
-    positionX,
-    rotation
   }
 }
