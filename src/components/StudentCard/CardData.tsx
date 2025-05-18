@@ -28,7 +28,6 @@ export const UserCardData = memo((props: UserCardDataProps) => {
               alt={student.name}
             />
           )}
-          {!isLoading && !avatarUrl && <div className="student-avatar"></div>}
         </div>
       </div>
       <div className="student-card_actions">

@@ -61,8 +61,8 @@
 }
 
 .avatar_loading-spinner {
-  width: 21rem;
-  height: 21rem;
+  width: 70vw;
+  height: 70vw;
   border: 0.5rem solid aquamarine;
   border-radius: 50%;
   border-end-end-radius: 50%;
